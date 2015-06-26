@@ -1,0 +1,28 @@
+{
+    "name": "cornford/backup",
+    "description": "An easy way backup and restore databases in Laravel.",
+    "keywords": ["laravel", "database", "backup", "restore", "dump"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bradley Cornford",
+            "email": "me@bradleycornford.co.uk"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "illuminate/console": "4.2.*",
+        "symfony/process": "*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.*@dev",
+        "mockery/mockery": "0.9.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Cornford\\Backup": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
