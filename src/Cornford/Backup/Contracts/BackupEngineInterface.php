@@ -4,8 +4,6 @@ use Cornford\Backup\BackupProcess;
 
 interface BackupEngineInterface {
 
-	CONST ENGINE_NAME = '';
-
 	/**
 	 * Backup engine constructor.
 	 *

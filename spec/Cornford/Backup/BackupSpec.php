@@ -86,8 +86,8 @@ class BackupSpec extends ObjectBehavior {
 
 	function it_should_allow_path_option_to_be_set_and_got()
 	{
-		$this->setPath('/path');
-		$this->getPath()->shouldReturn('/path');
+		$this->setPath(__DIR__);
+		$this->getPath()->shouldReturn(__DIR__);
 	}
 
 	function it_should_allow_compress_option_to_be_set_and_got()
@@ -114,7 +114,7 @@ class BackupSpec extends ObjectBehavior {
 		$this->setPath(__DIR__);
 		$this->setCompress(false);
 		$this->export('filename')->shouldReturn(true);
-		$this->getWorkingFilepath()->shouldReturn(__DIR__. '/filename.sql');
+		$this->getWorkingFilepath()->shouldReturn(__DIR__ . '/filename.sql');
 	}
 
 	function it_should_export_a_database()

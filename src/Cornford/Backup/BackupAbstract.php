@@ -328,9 +328,11 @@ abstract class BackupAbstract implements BackupInterface {
 	/**
 	 * Get database restoration files.
 	 *
+	 * @param string $path
+	 *
 	 * @return array
 	 */
-	abstract public function getRestorationFiles();
+	abstract public function getRestorationFiles($path = null);
 
 	/**
 	 * Get database process output.

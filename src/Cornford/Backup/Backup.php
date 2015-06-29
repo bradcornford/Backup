@@ -200,6 +200,7 @@ class Backup extends BackupAbstract {
 				}
 			}
 		} catch (Exception $exception) {
+            		// Exception thrown continue and return empty result set
 		}
 
 		return $results;
