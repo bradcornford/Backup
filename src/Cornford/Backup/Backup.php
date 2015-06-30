@@ -183,7 +183,7 @@ class Backup extends BackupAbstract {
 	 */
 	public function getRestorationFiles($path = null)
 	{
-		if ($path !== null) {
+		if ($path === null) {
 			$path = $this->getPath();
 		}
 

@@ -41,9 +41,13 @@ Once this operation completes, the next step is to add the service provider. Ope
 
 	'Cornford\Backup\Providers\BackupServiceProvider',
 
-The final step is to introduce the facade. Open `app/config/app.php`, and add a new item to the aliases array.
+The next step is to introduce the facade. Open `app/config/app.php`, and add a new item to the aliases array.
 
 	'Backup'         => 'Cornford\Backup\Facades\Backup',
+
+Finally we need to introduce the configuration files into your application.
+
+	php artisan config:publish cornford/backup
 
 That's it! You're all set to go.
 
