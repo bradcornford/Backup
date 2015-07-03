@@ -21,7 +21,7 @@ return array(
 	| directory, a trailing slash is required.
 	|
 	*/
-	'path' => '../app/storage/backup/',
+	'path' => '../storage/backup/',
 
 	/*
 	|--------------------------------------------------------------------------

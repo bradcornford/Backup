@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/bradcornford/Backup.svg?branch=master)](https://travis-ci.org/bradcornford/backup)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bradcornford/Backup/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bradcornford/Backup/?branch=master)
 
+### For Laravel 4.x, check [version 1.0.0](https://github.com/bradcornford/Backup/tree/v1.0.0)
+
 Think of Backup as an easy way to backup and restore a database, with command line integration to Laravel's artisan. These include:
 
 - `Backup::export`
@@ -30,30 +32,30 @@ Think of Backup as an easy way to backup and restore a database, with command li
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `cornford/backup`.
 
 	"require": {
-		"cornford/backup": "1.*"
+		"cornford/backup": "2.*"
 	}
 
 Next, update Composer from the Terminal:
 
 	composer update
 
-Once this operation completes, the next step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+Once this operation completes, the next step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
 
 	'Cornford\Backup\Providers\BackupServiceProvider',
 
-The next step is to introduce the facade. Open `app/config/app.php`, and add a new item to the aliases array.
+The next step is to introduce the facade. Open `config/app.php`, and add a new item to the aliases array.
 
 	'Backup'         => 'Cornford\Backup\Facades\Backup',
 
 Finally we need to introduce the configuration files into your application.
 
-	php artisan config:publish cornford/backup
+	php artisan vendor:publish --provider="Cornford\\Backup\\Providers\\BackupServiceProvider"
 
 That's it! You're all set to go.
 
 ## Configuration
 
-You can now configure Backup in a few simple steps. Open `app/config/packages/cornford/backup/config.php` and update the options as needed.
+You can now configure Backup in a few simple steps. Open `config/backup.php` and update the options as needed.
 
 - `enabled` - Enable Backup.
 - `path` - A database backup path, absolute path, or path relative from public directory, a trailing slash is required.
