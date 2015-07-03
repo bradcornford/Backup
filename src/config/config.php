@@ -28,7 +28,7 @@ return array(
 	| Filename
 	|--------------------------------------------------------------------------
 	|
-	| A database export filename.
+	| A database export filename to use when exporting databases.
 	|
 	*/
 	'filename' => 'backup-' . date('Ymd-His'),
@@ -38,7 +38,7 @@ return array(
 	| Enable Compression
 	|--------------------------------------------------------------------------
 	|
-	| Enable backup compression using gzip.
+	| Enable backup compression using gzip. Requires gzencode/gzdecode.
 	|
 	*/
 	'compress' => true,
