@@ -51,6 +51,16 @@ Finally we need to introduce the configuration files into your application.
 
 That's it! You're all set to go.
 
+## Configuration
+
+You can now configure Backup in a few simple steps. Open `app/config/packages/cornford/backup/config.php` and update the options as needed.
+
+- `enabled` - Enable Backup.
+- `path` - A database backup path, absolute path, or path relative from public directory, a trailing slash is required.
+- `filename` - A database export filename to use when exporting databases.
+- `compress` - Enable backup compression using gzip. Requires gzencode/gzdecode.
+- `processors` - Set the database engines processor location, trailing slash is required.
+
 ## Usage
 
 It's really as simple as using the Backup class in any Controller / Model / File you see fit with:
