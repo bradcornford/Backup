@@ -4,6 +4,11 @@ use Cornford\Backup\Contracts\BackupFilesystemInterface;
 
 class BackupFilesystem implements BackupFilesystemInterface {
 
+	const OS_UNKNOWN = 1;
+	const OS_WIN = 2;
+	const OS_LINUX = 3;
+	const OS_OSX = 4;
+
 	/**
 	 * Check path exists.
 	 *
@@ -38,6 +43,18 @@ class BackupFilesystem implements BackupFilesystemInterface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if file is empty.
+	 *
+	 * @param string $filepath
+	 *
+	 * @return boolean
+	 */
+	public function checkFileEmpty($filepath)
+	{
+		return filesize($filepath) == 0;
 	}
 
 	/**
@@ -80,6 +97,59 @@ class BackupFilesystem implements BackupFilesystemInterface {
 		$filePointer = fopen($uncompressedFilepath, 'w');
 		fwrite($filePointer, gzdecode(file_get_contents($filepath, 9)));
 		fclose($filePointer);
+	}
+
+	/**
+	 * Get the operating system.
+	 *
+	 * @return integer
+	 */
+	public function getOperatingSystem()
+	{
+		switch (true) {
+			case stristr(PHP_OS, 'DAR'):
+				return self::OS_OSX;
+			case stristr(PHP_OS, 'WIN'):
+				return self::OS_WIN;
+			case stristr(PHP_OS, 'LINUX'):
+				return self::OS_LINUX;
+			default:
+				return self::OS_UNKNOWN;
+		}
+	}
+
+	/**
+	 * Locate command location.
+	 *
+	 * @param string $command
+	 *
+	 * @return string|false
+	 */
+	public function locateCommand($command)
+	{
+		switch ($this->getOperatingSystem()) {
+			case self::OS_OSX:
+			case self::OS_LINUX:
+				exec(sprintf('which %s', $command), $result, $returnCode);
+				if (isset($result[0])) {
+					$result = substr($result[0], 0, strrpos($result[0], '/') + 1);
+				}
+				break;
+			case self::OS_WIN:
+				exec(sprintf('where %s', $command), $result, $returnCode);
+				if (isset($result[0])) {
+					$result = $result[0];
+				}
+				break;
+			default:
+				return false;
+		}
+
+		if (empty($result)) {
+			return false;
+		}
+
+		return $result;
 	}
 
 	/**

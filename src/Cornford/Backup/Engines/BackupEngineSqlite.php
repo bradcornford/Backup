@@ -2,7 +2,30 @@
 
 class BackupEngineSqlite extends BackupEngineAbstract {
 
-	CONST ENGINE_NAME = 'sqlite';
+	const ENGINE_NAME = 'sqlite';
+	const ENGINE_EXTENSION = 'sqlite';
+	const ENGINE_EXPORT_PROCESS = 'cp';
+	const ENGINE_RESTORE_PROCESS = 'cp';
+
+	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	public function getExportProcess()
+	{
+		return self::ENGINE_EXPORT_PROCESS;
+	}
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	public function getRestoreProcess()
+	{
+		return self::ENGINE_RESTORE_PROCESS;
+	}
 
 	/**
 	 * Get database file extension.
@@ -11,7 +34,7 @@ class BackupEngineSqlite extends BackupEngineAbstract {
 	 */
 	public function getFileExtension()
 	{
-		return 'sqlite';
+		return self::ENGINE_EXTENSION;
 	}
 
 	/**
@@ -23,7 +46,9 @@ class BackupEngineSqlite extends BackupEngineAbstract {
 	 */
 	public function export($filepath)
 	{
-		$command = sprintf('cp %s %s',
+		$command = sprintf('%s%s %s %s',
+			$this->getExportCommand(),
+			self::ENGINE_EXPORT_PROCESS,
 			escapeshellarg($this->getDatabase()),
 			escapeshellarg($filepath)
 		);
@@ -40,7 +65,9 @@ class BackupEngineSqlite extends BackupEngineAbstract {
 	 */
 	public function restore($filepath)
 	{
-		$command = sprintf('cp -f %s %s',
+		$command = sprintf('%s%s -f %s %s',
+			$this->getRestoreCommand(),
+			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($filepath),
 			escapeshellarg($this->getDatabase())
 		);

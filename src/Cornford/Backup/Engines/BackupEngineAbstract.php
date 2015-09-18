@@ -312,6 +312,20 @@ abstract class BackupEngineAbstract implements BackupEngineInterface {
 	}
 
 	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	abstract public function getExportProcess();
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	abstract public function getRestoreProcess();
+
+	/**
 	 * Get database file extension.
 	 *
 	 * @return string

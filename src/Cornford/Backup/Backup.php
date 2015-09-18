@@ -73,6 +73,12 @@ class Backup extends BackupAbstract {
 
 		$this->setWorkingFilepath($filepath);
 
+		if ($this->getBackupFilesystemInstance()->checkFileEmpty($filepath)) {
+			$this->getBackupFilesystemInstance()->removeFile($filepath);
+
+			return false;
+		}
+
 		if ($this->isCompressed($filepath)) {
 			$filepath = $this->decompressFile($filepath);
 		}
@@ -101,6 +107,7 @@ class Backup extends BackupAbstract {
 	 *
 	 * @param string  $filepath
 	 * @param boolean $force
+	 *
 	 * @return void
 	 */
 	protected function removeTemporaryFiles($filepath, $force = false)
@@ -205,7 +212,7 @@ class Backup extends BackupAbstract {
 				}
 			}
 		} catch (Exception $exception) {
-            // Exception thrown continue and return empty result set
+			// Exception thrown continue and return empty result set
 		}
 
 		return $results;

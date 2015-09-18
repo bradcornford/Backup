@@ -106,8 +106,17 @@ abstract class BackupAbstract implements BackupInterface {
 		$this->setFilename($this->options['filename']);
 		$this->setCompress($this->options['compress']);
 
-		$exportCommand = isset($options['processors'][$this->getBackupEngineName()]['export']) ? $options['processors'][$this->getBackupEngineName()]['export'] : null;
-		$restoreCommand = isset($options['processors'][$this->getBackupEngineName()]['restore']) ? $options['processors'][$this->getBackupEngineName()]['restore'] : null;
+		$exportCommand = $this->backupFilesystemInstance->locateCommand(self::$backupEngineInstance->getExportProcess());
+
+		if (!$exportCommand) {
+			$exportCommand = isset($options['processors'][$this->getBackupEngineName()]['export']) ? $options['processors'][$this->getBackupEngineName()]['export'] : null;
+		}
+
+		$restoreCommand = $this->backupFilesystemInstance->locateCommand(self::$backupEngineInstance->getRestoreProcess());
+
+		if (!$restoreCommand) {
+			$restoreCommand = isset($options['processors'][$this->getBackupEngineName()]['restore']) ? $options['processors'][$this->getBackupEngineName()]['restore'] : null;
+		}
 
 		self::$backupEngineInstance->setExportCommand($exportCommand);
 		self::$backupEngineInstance->setRestoreCommand($restoreCommand);

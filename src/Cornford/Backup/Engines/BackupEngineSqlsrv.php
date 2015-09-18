@@ -2,7 +2,30 @@
 
 class BackupEngineSqlsrv extends BackupEngineAbstract {
 
-	CONST ENGINE_NAME = 'sqlsrv';
+	const ENGINE_NAME = 'sqlsrv';
+	const ENGINE_EXTENSION = 'bak';
+	const ENGINE_EXPORT_PROCESS = 'SqlCmd';
+	const ENGINE_RESTORE_PROCESS = 'SqlCmd';
+
+	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	public function getExportProcess()
+	{
+		return self::ENGINE_EXPORT_PROCESS;
+	}
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	public function getRestoreProcess()
+	{
+		return self::ENGINE_RESTORE_PROCESS;
+	}
 
 	/**
 	 * Get database file extension.
@@ -11,7 +34,7 @@ class BackupEngineSqlsrv extends BackupEngineAbstract {
 	 */
 	public function getFileExtension()
 	{
-		return 'bak';
+		return self::ENGINE_EXTENSION;
 	}
 
 	/**
@@ -24,7 +47,9 @@ class BackupEngineSqlsrv extends BackupEngineAbstract {
 	public function export($filepath)
 	{
 		$command = sprintf(
-			'SqlCmd -E -S %s –Q "BACKUP DATABASE %s TO DISK=\'%s\'"',
+			'%s%s -E -S %s –Q "BACKUP DATABASE %s TO DISK=\'%s\'"',
+			$this->getExportCommand(),
+			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getDatabase()),
 			escapeshellarg($filepath)
@@ -42,7 +67,9 @@ class BackupEngineSqlsrv extends BackupEngineAbstract {
 	 */
 	public function restore($filepath)
 	{
-		$command = sprintf('SqlCmd -E -S %s –Q "RESTORE DATABASE %s FROM DISK=\'D:BackupsMyDB.bak\'"',
+		$command = sprintf('%s%s -E -S %s –Q "RESTORE DATABASE %s FROM DISK=\'%s\'"',
+			$this->getRestoreCommand(),
+			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getDatabase()),
 			escapeshellarg($filepath)

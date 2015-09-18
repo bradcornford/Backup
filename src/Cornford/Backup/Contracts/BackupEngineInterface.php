@@ -170,6 +170,20 @@ interface BackupEngineInterface {
 	public function getOptions();
 
 	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	public function getExportProcess();
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	public function getRestoreProcess();
+
+	/**
 	 * Get database file extension.
 	 *
 	 * @return string
