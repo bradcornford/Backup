@@ -2,7 +2,30 @@
 
 class BackupEnginePgsql extends BackupEngineAbstract {
 
-	CONST ENGINE_NAME = 'pgsql';
+	const ENGINE_NAME = 'pgsql';
+	const ENGINE_EXTENSION = 'pgsql';
+	const ENGINE_EXPORT_PROCESS = 'pg_dump';
+	const ENGINE_RESTORE_PROCESS = 'pg_restore';
+
+	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	public function getExportProcess()
+	{
+		return self::ENGINE_EXPORT_PROCESS;
+	}
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	public function getRestoreProcess()
+	{
+		return self::ENGINE_RESTORE_PROCESS;
+	}
 
 	/**
 	 * Get database file extension.
@@ -11,7 +34,7 @@ class BackupEnginePgsql extends BackupEngineAbstract {
 	 */
 	public function getFileExtension()
 	{
-		return 'pgsql';
+		return self::ENGINE_EXTENSION;
 	}
 
 	/**
@@ -24,8 +47,10 @@ class BackupEnginePgsql extends BackupEngineAbstract {
 	public function export($filepath)
 	{
 		$command = sprintf(
-			'PGPASSWORD=%s pg_dump -Fc --no-acl --no-owner -h %s -U %s %s > %s',
+			'PGPASSWORD=%s %s%s -Fc --no-acl --no-owner -h %s -U %s %s > %s',
 			escapeshellarg($this->getPassword()),
+			$this->getExportCommand(),
+			self::ENGINE_EXPORT_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getDatabase()),
@@ -44,8 +69,10 @@ class BackupEnginePgsql extends BackupEngineAbstract {
 	 */
 	public function restore($filepath)
 	{
-		$command = sprintf('PGPASSWORD=%s pg_restore --verbose --clean --no-acl --no-owner -h %s -U %s -d %s %s',
+		$command = sprintf('PGPASSWORD=%s %s%s --verbose --clean --no-acl --no-owner -h %s -U %s -d %s %s',
 			escapeshellarg($this->getPassword()),
+			$this->getRestoreCommand(),
+			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getDatabase()),

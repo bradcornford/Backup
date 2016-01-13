@@ -48,6 +48,8 @@ class BackupSpec extends ObjectBehavior {
 		$this->engineInstance->shouldReceive('getFileExtension')->andReturn('sql');
 		$this->engineInstance->shouldReceive('setExportCommand', [$processor['export']])->andReturn('sql');
 		$this->engineInstance->shouldReceive('setRestoreCommand', [$processor['restore']])->andReturn('sql');
+		$this->engineInstance->shouldReceive('getExportProcess')->andReturn('mysqldump');
+		$this->engineInstance->shouldReceive('getRestoreProcess')->andReturn('mysql');
 		$this->engineInstance->shouldReceive('getProcessOutput')->andReturn('output');
 
 		$this->filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
@@ -57,6 +59,8 @@ class BackupSpec extends ObjectBehavior {
 		$this->filesystemInstance->shouldReceive('checkFileExists')->andReturn(true);
 		$this->filesystemInstance->shouldReceive('checkPathExists')->andReturn(true);
 		$this->filesystemInstance->shouldReceive('checkFunctionExists')->andReturn(true);
+		$this->filesystemInstance->shouldReceive('checkFileEmpty')->andReturn(false);
+		$this->filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $this->filesystemInstance, $this->options);
 	}
@@ -146,6 +150,7 @@ class BackupSpec extends ObjectBehavior {
 	{
 		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(false);
+		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
@@ -157,6 +162,7 @@ class BackupSpec extends ObjectBehavior {
 	{
 		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
 		$filesystemInstance->shouldReceive('checkFileExists')->andReturn(false);
+		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
@@ -168,6 +174,7 @@ class BackupSpec extends ObjectBehavior {
 	{
 		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(false);
+		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
@@ -179,6 +186,7 @@ class BackupSpec extends ObjectBehavior {
 		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(true);
 		$filesystemInstance->shouldReceive('checkFunctionExists', ['gzencode'])->andReturn(false);
+		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
@@ -192,6 +200,8 @@ class BackupSpec extends ObjectBehavior {
 		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
 		$filesystemInstance->shouldReceive('checkFileExists')->andReturn(true);
 		$filesystemInstance->shouldReceive('checkFunctionExists', ['gzencode'])->andReturn(false);
+        $filesystemInstance->shouldReceive('checkFileEmpty')->andReturn(false);
+		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 

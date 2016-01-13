@@ -38,11 +38,16 @@ class Backup extends BackupAbstract {
 
 		$result = $this->getBackupEngineInstance()->export($filepath);
 
-		if ($this->getCompress()) {
-			$filepath = $this->compressFile($filepath);
-		}
+		if ($result) {
+			if ($this->getCompress()) {
+				$filepath = $this->compressFile($filepath);
+			}
 
-		$this->setWorkingFilepath($filepath);
+			$this->setWorkingFilepath($filepath);
+		} else {
+			$this->removeTemporaryFiles($filepath, true);
+			$this->setWorkingFilepath(null);
+		}
 
 		return $result;
 	}
@@ -68,6 +73,12 @@ class Backup extends BackupAbstract {
 
 		$this->setWorkingFilepath($filepath);
 
+		if ($this->getBackupFilesystemInstance()->checkFileEmpty($filepath)) {
+			$this->getBackupFilesystemInstance()->removeFile($filepath);
+
+			return false;
+		}
+
 		if ($this->isCompressed($filepath)) {
 			$filepath = $this->decompressFile($filepath);
 		}
@@ -92,15 +103,16 @@ class Backup extends BackupAbstract {
 	}
 
 	/**
-	 * Remove temporary compression files.
+	 * Remove temporary files.
 	 *
-	 * @param string $filepath
+	 * @param string  $filepath
+	 * @param boolean $force
 	 *
 	 * @return void
 	 */
-	protected function removeTemporaryFiles($filepath)
+	protected function removeTemporaryFiles($filepath, $force = false)
 	{
-		if ($filepath !== $this->getUncompressedFilepath($filepath)) {
+		if ($force || $filepath !== $this->getUncompressedFilepath($filepath)) {
 			$this->getBackupFilesystemInstance()->removeFile($this->getUncompressedFilepath($filepath));
 		}
 	}

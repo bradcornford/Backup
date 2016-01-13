@@ -21,6 +21,15 @@ interface BackupFilesystemInterface {
 	public function checkFileExists($filepath);
 
 	/**
+	 * Check if file is empty.
+	 *
+	 * @param string $filepath
+	 *
+	 * @return boolean
+	 */
+	public function checkFileEmpty($filepath);
+
+	/**
 	 * Remove file.
 	 *
 	 * @param string $filepath
@@ -48,6 +57,22 @@ interface BackupFilesystemInterface {
 	 * @return void
 	 */
 	public function writeUncompressedFile($uncompressedFilepath, $filepath);
+
+	/**
+	 * Get the operating system.
+	 *
+	 * @return integer
+	 */
+	public function getOperatingSystem();
+
+	/**
+	 * Locate command location.
+	 *
+	 * @param string $command
+	 *
+	 * @return string|false
+	 */
+	public function locateCommand($command);
 
 	/**
 	 * Check a function exists.

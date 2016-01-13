@@ -2,7 +2,30 @@
 
 class BackupEngineMysql extends BackupEngineAbstract {
 
-	CONST ENGINE_NAME = 'mysql';
+	const ENGINE_NAME = 'mysql';
+	const ENGINE_EXTENSION = 'sql';
+	const ENGINE_EXPORT_PROCESS = 'mysqldump';
+	const ENGINE_RESTORE_PROCESS = 'mysql';
+
+	/**
+	 * Get export process.
+	 *
+	 * @return string
+	 */
+	public function getExportProcess()
+	{
+		return self::ENGINE_EXPORT_PROCESS;
+	}
+
+	/**
+	 * Get restore process.
+	 *
+	 * @return string
+	 */
+	public function getRestoreProcess()
+	{
+		return self::ENGINE_RESTORE_PROCESS;
+	}
 
 	/**
 	 * Get database file extension.
@@ -11,7 +34,7 @@ class BackupEngineMysql extends BackupEngineAbstract {
 	 */
 	public function getFileExtension()
 	{
-		return 'sql';
+		return self::ENGINE_EXTENSION;
 	}
 
 	/**
@@ -24,8 +47,9 @@ class BackupEngineMysql extends BackupEngineAbstract {
 	public function export($filepath)
 	{
 		$command = sprintf(
-			'%smysqldump --user=%s --password=%s --host=%s --port=%s %s > %s',
+			'%s%s --user=%s --password=%s --host=%s --port=%s %s > %s',
 			$this->getExportCommand(),
+			self::ENGINE_EXPORT_PROCESS,
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getPassword()),
 			escapeshellarg($this->getHostname()),
@@ -47,8 +71,9 @@ class BackupEngineMysql extends BackupEngineAbstract {
 	public function restore($filepath)
 	{
 		$command = sprintf(
-			'%smysql --user=%s --password=%s --host=%s --port=%s %s < %s',
+			'%s%s --user=%s --password=%s --host=%s --port=%s %s < %s',
 			$this->getRestoreCommand(),
+			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getPassword()),
 			escapeshellarg($this->getHostname()),
