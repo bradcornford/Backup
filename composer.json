@@ -1,5 +1,5 @@
 {
-    "name": "cornford/backup",
+    "name": "capitaladot/backup",
     "description": "An easy way backup and restore databases in Laravel.",
     "keywords": ["laravel", "database", "backup", "restore", "dump"],
     "license": "MIT",
