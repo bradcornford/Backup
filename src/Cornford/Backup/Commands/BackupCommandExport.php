@@ -34,7 +34,7 @@ class BackupCommandExport extends BackupCommandAbstract
 		if ($this->input->getOption('path') !== null) {
 			$backupInstance->setPath($this->input->getOption('path'));
 		} else {
-			$backupInstance->setPath('app/storage/backup/');
+			$backupInstance->setPath(storage_path().'backup/');
 		}
 
 		if ($this->input->getOption('compress') !== null) {
