@@ -41,6 +41,10 @@ class BackupCommandExportSpec extends ObjectBehavior {
 
 	function it_should_execute_when_calling_fire_action(HelperSet $helpers)
 	{
+		$app = Mockery::mock('Illuminate\Contracts\Foundation\Application');
+		$app->shouldReceive('call')->andReturn(true);
+
+		$this->setLaravel($app);
 		$input = new ArrayInput([]);
 		$output = new NullOutput;
 		$this->setHelperSet($helpers);
