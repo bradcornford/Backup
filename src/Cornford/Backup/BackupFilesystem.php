@@ -66,7 +66,7 @@ class BackupFilesystem implements BackupFilesystemInterface {
 	*/
 	public function removeFile($filepath)
 	{
-		unlink($filepath);
+		@unlink($filepath);
 	}
 
 	/**
