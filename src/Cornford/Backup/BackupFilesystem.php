@@ -10,6 +10,16 @@ class BackupFilesystem implements BackupFilesystemInterface {
 	const OS_OSX = 4;
 
 	/**
+	 * Ignored files.
+	 *
+	 * @var array
+	 */
+	public static $ignoredFiles = [
+		'.gitignore',
+		'.gitkeep'
+	];
+
+	/**
 	 * Check path exists.
 	 *
 	 * @param string $path
