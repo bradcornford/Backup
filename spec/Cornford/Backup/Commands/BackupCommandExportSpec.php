@@ -18,6 +18,8 @@ class BackupCommandExportSpec extends ObjectBehavior {
 		$backup->shouldReceive('setEnabled');
 		$backup->shouldReceive('setPath');
 		$backup->shouldReceive('getWorkingFilepath')->andReturn('');
+		$backup->shouldReceive('setCompress');
+		$backup->shouldReceive('setFilename');
 		$backup->shouldReceive('export')->andReturn(true);
 
 		$backupFactory = Mockery::mock('Cornford\Backup\BackupFactory');
@@ -44,8 +46,16 @@ class BackupCommandExportSpec extends ObjectBehavior {
 		$app = Mockery::mock('Illuminate\Contracts\Foundation\Application');
 		$app->shouldReceive('call')->andReturn(true);
 
+		$input = Mockery::mock('Symfony\Component\Console\Input\ArrayInput');
+		$input->shouldReceive('bind');
+		$input->shouldReceive('isInteractive')->andReturn(false);
+		$input->shouldReceive('hasArgument')->andReturn(false);
+		$input->shouldReceive('getArgument')->andReturn(false);
+		$input->shouldReceive('validate')->andReturn(false);
+		$input->shouldReceive('getOption')->andReturn(false);
+
 		$this->setLaravel($app);
-		$input = new ArrayInput([]);
+
 		$output = new NullOutput;
 		$this->setHelperSet($helpers);
 		$this->run($input, $output);

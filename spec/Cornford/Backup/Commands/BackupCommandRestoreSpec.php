@@ -46,9 +46,16 @@ class BackupCommandRestoreSpec extends ObjectBehavior {
 		$app = Mockery::mock('Illuminate\Contracts\Foundation\Application');
 		$app->shouldReceive('call')->andReturn(true);
 
+		$input = Mockery::mock('Symfony\Component\Console\Input\ArrayInput');
+		$input->shouldReceive('bind');
+		$input->shouldReceive('isInteractive')->andReturn(false);
+		$input->shouldReceive('hasArgument')->andReturn(false);
+		$input->shouldReceive('validate')->andReturn(false);
+		$input->shouldReceive('getOption')->andReturn(false);
+
 		$this->setLaravel($app);
 		$helpers->get('question')->willReturn($question);
-		$input = new ArrayInput([]);
+
 		$output = new NullOutput;
 		$query = Argument::type('Symfony\Component\Console\Question\ChoiceQuestion');
 		$question->ask($input, $output, $query)->willReturn(1);
