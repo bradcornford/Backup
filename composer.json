@@ -13,6 +13,7 @@
         "php": ">=5.4.0",
         "illuminate/support": "5.*",
         "illuminate/console": "5.*",
+        "illuminate/config": "5.*",
         "symfony/process": "*"
     },
     "require-dev": {
