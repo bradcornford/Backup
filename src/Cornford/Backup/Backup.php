@@ -208,7 +208,7 @@ class Backup extends BackupAbstract {
 		try {
 			foreach (new DirectoryIterator($path) as $fileinfo) {
 				if ($fileinfo->isDot() ||
-					$fileinfo->isFile() ||
+					!$fileinfo->isFile() ||
 					in_array($fileinfo->getFilename(), BackupFilesystem::$ignoredFiles) ||
 					substr($fileinfo->getFilename(), 0, 1) == '.'
 				) {
