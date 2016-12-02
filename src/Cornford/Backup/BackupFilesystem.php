@@ -140,7 +140,7 @@ class BackupFilesystem implements BackupFilesystemInterface {
 		switch ($this->getOperatingSystem()) {
 			case self::OS_OSX:
 			case self::OS_LINUX:
-				exec(sprintf('which %s', $command), $result, $returnCode);
+				exec(sprintf('/usr/bin/which %s', $command), $result, $returnCode);
 				if (isset($result[0])) {
 					$result = substr($result[0], 0, strrpos($result[0], '/') + 1);
 				}
