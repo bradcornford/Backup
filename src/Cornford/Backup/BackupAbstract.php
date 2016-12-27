@@ -243,7 +243,7 @@ abstract class BackupAbstract implements BackupInterface {
 	{
 		$path = getcwd() . DIRECTORY_SEPARATOR . $this->path;
 
-		if (substr($this->path, 0, 1) == '/') {
+		if (substr($this->path, 0, 1) == '/' || substr($this->path, 1, 1) == ':') {
 			$path = $this->path;
 		}
 
