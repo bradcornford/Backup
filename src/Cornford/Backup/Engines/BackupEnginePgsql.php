@@ -47,10 +47,9 @@ class BackupEnginePgsql extends BackupEngineAbstract {
 	public function export($filepath)
 	{
 		$command = sprintf(
-			'PGPASSWORD=%s %s%s -Fc --no-acl --no-owner -h %s -U %s %s > %s',
+			'PGPASSWORD=%s %s -Fc --no-acl --no-owner -h %s -U %s %s > %s',
 			escapeshellarg($this->getPassword()),
 			$this->getExportCommand(),
-			self::ENGINE_EXPORT_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getDatabase()),
@@ -69,10 +68,9 @@ class BackupEnginePgsql extends BackupEngineAbstract {
 	 */
 	public function restore($filepath)
 	{
-		$command = sprintf('PGPASSWORD=%s %s%s --verbose --clean --no-acl --no-owner -h %s -U %s -d %s %s',
+		$command = sprintf('PGPASSWORD=%s %s --verbose --clean --no-acl --no-owner -h %s -U %s -d %s %s',
 			escapeshellarg($this->getPassword()),
 			$this->getRestoreCommand(),
-			self::ENGINE_RESTORE_PROCESS,
 			escapeshellarg($this->getHostname()),
 			escapeshellarg($this->getUsername()),
 			escapeshellarg($this->getDatabase()),
