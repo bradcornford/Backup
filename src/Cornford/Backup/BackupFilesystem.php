@@ -142,7 +142,7 @@ class BackupFilesystem implements BackupFilesystemInterface {
 			case self::OS_LINUX:
 				exec(sprintf('/usr/bin/which %s', $command), $result, $returnCode);
 				if (isset($result[0])) {
-					$result = substr($result[0], 0, strrpos($result[0], '/') + 1);
+					$result = $result[0];
 				}
 				break;
 			case self::OS_WIN:
