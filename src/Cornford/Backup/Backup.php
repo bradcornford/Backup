@@ -36,6 +36,7 @@ class Backup extends BackupAbstract {
 
 		$filepath = $path . '/' . $filename . '.' . $this->getBackupEngineInstance()->getFileExtension();
 
+        $this->setWorkingFilepath($filepath);
 		$result = $this->getBackupEngineInstance()->export($filepath);
 
 		if ($result) {
