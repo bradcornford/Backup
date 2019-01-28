@@ -53,20 +53,20 @@ return array(
 	*/
 	'processors' => array(
 		'mysql' => array(
-			'export' => '/usr/bin/',
-			'restore' => '/usr/bin/'
+			'export' => env('MYSQLDUMP_PATH', '/usr/bin/'),
+			'restore' => env('MYSQLDUMP_PATH', '/usr/bin/')
 		),
 		'pqsql' => array(
-			'export' => '/usr/bin/',
-			'restore' => '/usr/bin/'
+			'export' => env('PSQLDUMP_PATH', '/usr/bin/'),
+			'restore' => env('PSQLDUMP_PATH', '/usr/bin/')
 		),
 		'sqlite' => array(
-			'export' => null,
-			'restore' => null
+			'export' => env('SQLITEDUMP_PATH', null),
+			'restore' => env('SQLITEDUMP_PATH', null)
 		),
 		'sqlsrv' => array(
-			'export' => '/usr/bin/',
-			'restore' => '/usr/bin/'
+			'export' => env('SQLSRVDUMP_PATH', '/usr/bin/'),
+			'restore' => env('SQLSRVDUMP_PATH', '/usr/bin/')
 		),
 	),
 
