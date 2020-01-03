@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class Backup extends Facade {
+class BackupFacade extends Facade {
 
 	protected static function getFacadeAccessor() { return 'backup'; }
 

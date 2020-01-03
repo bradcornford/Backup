@@ -39,17 +39,17 @@ Next, update Composer from the Terminal:
 
 	composer update
 
-Once this operation completes, the next step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
+Once this operation completes, the next step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
 
-	'Cornford\Backup\Providers\BackupServiceProvider',
+	Cornford\Backup\Providers\BackupServiceProvider::class,
 
-The next step is to introduce the facade. Open `config/app.php`, and add a new item to the aliases array.
+The next step is to introduce the facade. Open `app/config/app.php`, and add a new item to the aliases array.
 
-	'Backup'         => 'Cornford\Backup\Facades\Backup',
+	'Backup'         => Cornford\Backup\Facades\BackupFacade::class,
 
 Finally we need to introduce the configuration files into your application.
 
-	php artisan vendor:publish --provider="Cornford\\Backup\\Providers\\BackupServiceProvider"
+	php artisan vendor:publish --provider="Cornford\\Backup\\Providers\\BackupServiceProvider" --tag=backup
 
 That's it! You're all set to go.
 
