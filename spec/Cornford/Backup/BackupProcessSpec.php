@@ -1,7 +1,12 @@
 <?php namespace spec\Cornford\Backup;
 
+use Cornford\Backup\Contracts\BackupProcessInterface;
+use Cornford\Backup\Exceptions\BackupException;
+use Cornford\Backup\Exceptions\BackupExportException;
+use Cornford\Backup\Exceptions\BackupRestoreException;
 use PhpSpec\ObjectBehavior;
 use Mockery;
+use Symfony\Component\Process\Process;
 
 class BackupProcessSpec extends ObjectBehavior {
 
@@ -10,7 +15,7 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function let()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(true);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -23,12 +28,12 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\Contracts\BackupProcessInterface');
+		$this->shouldHaveType(BackupProcessInterface::class);
 	}
 
 	function it_should_set_a_process_instance()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(true);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -53,7 +58,7 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_should_run_a_command_with_a_set_process_instance()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(true);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -73,7 +78,7 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_should_run_a_command_with_a_set_process_instance_and_a_set_process_timeout()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(true);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -88,7 +93,7 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_should_fail_to_run_a_command_without_exception()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(false);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -102,7 +107,7 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_should_fail_to_run_a_command_without_exception_and_have_command_output()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run');
 		$process->shouldReceive('isSuccessful')->andReturn(false);
 		$process->shouldReceive('setCommandLine')->andReturn($process);
@@ -117,32 +122,32 @@ class BackupProcessSpec extends ObjectBehavior {
 
 	function it_should_throw_an_exception_when_a_process_throws_an_exception_for_a_default_operation()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run')->andThrow('Exception', 'Exception');
 		$process->shouldReceive('stop')->andReturn(0);
 
 		$this->setProcessInstance($process);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupException')->during('run', [self::command]);
+		$this->shouldThrow(BackupException::class)->during('run', [self::command]);
 	}
 
 	function it_should_throw_an_exception_when_a_process_throws_an_exception_for_an_export_operation()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run')->andThrow('Exception', 'Exception');
 		$process->shouldReceive('stop')->andReturn(0);
 
 		$this->setProcessInstance($process);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupExportException')->during('run', [self::command, 'export']);
+		$this->shouldThrow(BackupExportException::class)->during('run', [self::command, 'export']);
 	}
 
 	function it_should_throw_an_exception_when_a_process_throws_an_exception_for_an_restore_operation()
 	{
-		$process = Mockery::mock('Symfony\Component\Process\Process');
+		$process = Mockery::mock(Process::class);
 		$process->shouldReceive('run')->andThrow('Exception', 'Exception');
 		$process->shouldReceive('stop')->andReturn(0);
 
 		$this->setProcessInstance($process);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupRestoreException')->during('run', [self::command, 'restore']);
+		$this->shouldThrow(BackupRestoreException::class)->during('run', [self::command, 'restore']);
 	}
 
 }

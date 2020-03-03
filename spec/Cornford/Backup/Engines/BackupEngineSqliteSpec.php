@@ -1,7 +1,9 @@
 <?php namespace spec\Cornford\Backup\Engines;
 
+use Cornford\Backup\Engines\BackupEngineSqlite;
 use PhpSpec\ObjectBehavior;
 use Mockery;
+use Symfony\Component\Process\Process;
 
 class BackupEngineSqliteSpec extends ObjectBehavior {
 
@@ -9,7 +11,7 @@ class BackupEngineSqliteSpec extends ObjectBehavior {
 
 	public function let()
 	{
-		$symfonyProcess = Mockery::mock('Symfony\Component\Process\Process');
+		$symfonyProcess = Mockery::mock(Process::class);
 		$symfonyProcess->shouldReceive('run');
 		$symfonyProcess->shouldReceive('isSuccessful')->andReturn(true);
 		$symfonyProcess->shouldReceive('setCommandLine')->andReturn($symfonyProcess);
@@ -38,7 +40,7 @@ class BackupEngineSqliteSpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\Engines\BackupEngineSqlite');
+		$this->shouldHaveType(BackupEngineSqlite::class);
 	}
 
 	function it_should_return_the_correct_file_extension()

@@ -5,7 +5,9 @@
 [![Build Status](https://travis-ci.org/bradcornford/Backup.svg?branch=master)](https://travis-ci.org/bradcornford/backup)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bradcornford/Backup/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bradcornford/Backup/?branch=master)
 
-### For Laravel 4.x, check [version 1.0.0](https://github.com/bradcornford/Backup/tree/v1.0.0)
+### For Laravel 5.x, check [version 2.7.0](https://github.com/bradcornford/Backup/tree/v2.7.0)
+
+### For Laravel 4.x, check [version 1.3.0](https://github.com/bradcornford/Backup/tree/v1.3.0)
 
 Think of Backup as an easy way to backup and restore a database, with command line integration to Laravel's artisan. These include:
 
@@ -32,24 +34,24 @@ Think of Backup as an easy way to backup and restore a database, with command li
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `cornford/backup`.
 
 	"require": {
-		"cornford/backup": "2.*"
+		"cornford/backup": "3.*"
 	}
 
 Next, update Composer from the Terminal:
 
 	composer update
 
-Once this operation completes, the next step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+Once this operation completes, the next step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
 
 	Cornford\Backup\Providers\BackupServiceProvider::class,
 
-The next step is to introduce the facade. Open `app/config/app.php`, and add a new item to the aliases array.
+The next step is to introduce the facade. Open `config/app.php`, and add a new item to the aliases array.
 
 	'Backup'         => Cornford\Backup\Facades\BackupFacade::class,
 
 Finally we need to introduce the configuration files into your application.
 
-	php artisan vendor:publish --provider="Cornford\\Backup\\Providers\\BackupServiceProvider" --tag=backup
+	php artisan vendor:publish --provider="Cornford\Backup\Providers\BackupServiceProvider" --tag=backup
 
 That's it! You're all set to go.
 

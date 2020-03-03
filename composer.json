@@ -10,20 +10,31 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "^5.0 || ^6.0",
-        "illuminate/console": "^5.0 || ^6.0",
-        "illuminate/config": "^5.0 || ^6.0",
-        "symfony/process": "*"
+        "php": ">=7.2",
+        "illuminate/support": "^6.0",
+        "illuminate/console": "^6.0",
+        "illuminate/config": "^6.0",
+        "symfony/process": "^4.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.*@dev",
-        "mockery/mockery": "0.9.1"
+        "phpspec/phpspec": "^6.0",
+        "mockery/mockery": "^1.2.4",
+        "phpunit/phpunit": "^8.4"
     },
     "autoload": {
         "psr-0": {
             "Cornford\\Backup": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Cornford\\Backup\\Providers\\BackupServiceProvider"
+            ],
+            "aliases": {
+                "Backup": "Cornford\\Backup\\Facades\\BackupFacade"
+            }
+        }
+    }
 }

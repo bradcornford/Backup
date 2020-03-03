@@ -3,6 +3,8 @@
 use PhpSpec\ObjectBehavior;
 use Mockery;
 use Symfony\Component\Process\Process;
+use Cornford\Backup\BackupProcess;
+use Cornford\Backup\Engines\BackupEngineMysql;
 
 class BackupEngineMysqlSpec extends ObjectBehavior {
 
@@ -10,14 +12,14 @@ class BackupEngineMysqlSpec extends ObjectBehavior {
 
 	public function let()
 	{
-		$symfonyProcess = Mockery::mock('Symfony\Component\Process\Process');
+		$symfonyProcess = Mockery::mock(Process::class);
 		$symfonyProcess->shouldReceive('run');
 		$symfonyProcess->shouldReceive('isSuccessful')->andReturn(true);
 		$symfonyProcess->shouldReceive('setCommandLine')->andReturn($symfonyProcess);
 		$symfonyProcess->shouldReceive('setTimeout')->andReturn($symfonyProcess);
 		$symfonyProcess->shouldReceive('stop')->andReturn(1);
 
-		$process = Mockery::mock('Cornford\Backup\BackupProcess');
+		$process = Mockery::mock(BackupProcess::class);
 		$process->shouldReceive('__construct', [$symfonyProcess]);
 		$process->shouldReceive('run')->andReturn(true);
 
@@ -39,7 +41,7 @@ class BackupEngineMysqlSpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\Engines\BackupEngineMysql');
+		$this->shouldHaveType(BackupEngineMysql::class);
 	}
 
 	function it_should_return_the_correct_file_extension()

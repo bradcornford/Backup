@@ -1,7 +1,13 @@
 <?php namespace spec\Cornford\Backup;
 
+use Cornford\Backup\BackupFilesystem;
+use Cornford\Backup\Contracts\BackupInterface;
+use Cornford\Backup\Engines\BackupEngineMysql;
+use Cornford\Backup\Exceptions\BackupExportException;
+use Cornford\Backup\Exceptions\BackupRestoreException;
 use PhpSpec\ObjectBehavior;
 use Mockery;
+use Cornford\Backup\Exceptions\BackupException;
 
 class BackupSpec extends ObjectBehavior {
 
@@ -42,7 +48,7 @@ class BackupSpec extends ObjectBehavior {
 		$this->options['connections']['sqlsrv']['username'] = 'root';
 		$this->options['connections']['sqlsrv']['password'] = '';
 
-		$this->engineInstance = Mockery::mock('Cornford\Backup\Engines\BackupEngineMysql');
+		$this->engineInstance = Mockery::mock(BackupEngineMysql::class);
 		$this->engineInstance->shouldReceive('export')->andReturn(true);
 		$this->engineInstance->shouldReceive('restore')->andReturn(true);
 		$this->engineInstance->shouldReceive('getFileExtension')->andReturn('sql');
@@ -52,7 +58,7 @@ class BackupSpec extends ObjectBehavior {
 		$this->engineInstance->shouldReceive('getRestoreProcess')->andReturn('mysql');
 		$this->engineInstance->shouldReceive('getProcessOutput')->andReturn('output');
 
-		$this->filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$this->filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$this->filesystemInstance->shouldReceive('removeFile')->andReturn();
 		$this->filesystemInstance->shouldReceive('writeCompressedFile')->andReturn();
 		$this->filesystemInstance->shouldReceive('writeUncompressedFile')->andReturn();
@@ -67,7 +73,7 @@ class BackupSpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\Contracts\BackupInterface');
+		$this->shouldHaveType(BackupInterface::class);
 	}
 
 	function it_should_allow_a_backup_engine_to_be_set_and_got()
@@ -148,42 +154,42 @@ class BackupSpec extends ObjectBehavior {
 
 	function it_should_throw_an_exception_if_a_path_doesnt_exist_when_setting_a_path()
 	{
-		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(false);
 		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
 		$this->setPath('/path/to/file');
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupExportException')->during('export', ['filename']);
+		$this->shouldThrow(BackupExportException::class)->during('export', ['filename']);
 	}
 
 	function it_should_throw_an_exception_if_a_file_doesnt_exist_when_restoring_a_database()
 	{
-		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$filesystemInstance->shouldReceive('checkFileExists')->andReturn(false);
 		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
 		$this->setPath('/path/to/file');
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupRestoreException')->during('restore', ['filename']);
+		$this->shouldThrow(BackupRestoreException::class)->during('restore', ['filename']);
 	}
 
 	function it_should_throw_an_exception_if_the_database_restoration_path_doesnt_exist()
 	{
-		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(false);
 		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
 
 		$this->beConstructedWith($this->engineInstance, $filesystemInstance, $this->options);
 
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupException')->during('getRestorationFiles');
+		$this->shouldThrow(BackupException::class)->during('getRestorationFiles');
 	}
 
 	function it_should_throw_an_exception_if_the_function_gzencode_doesnt_exist()
 	{
-		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$filesystemInstance->shouldReceive('checkPathExists')->andReturn(true);
 		$filesystemInstance->shouldReceive('checkFunctionExists', ['gzencode'])->andReturn(false);
 		$filesystemInstance->shouldReceive('locateCommand', ['mysql'])->andReturn('/usr/bin/');
@@ -192,12 +198,12 @@ class BackupSpec extends ObjectBehavior {
 
 		$this->setPath(__DIR__);
 		$this->setCompress(true);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupException')->during('export', ['filename']);
+		$this->shouldThrow(BackupException::class)->during('export', ['filename']);
 	}
 
 	function it_should_throw_an_exception_if_the_function_gzdecode_doesnt_exist()
 	{
-		$filesystemInstance = Mockery::mock('Cornford\Backup\BackupFilesystem');
+		$filesystemInstance = Mockery::mock(BackupFilesystem::class);
 		$filesystemInstance->shouldReceive('checkFileExists')->andReturn(true);
 		$filesystemInstance->shouldReceive('checkFunctionExists', ['gzencode'])->andReturn(false);
         $filesystemInstance->shouldReceive('checkFileEmpty')->andReturn(false);
@@ -207,7 +213,7 @@ class BackupSpec extends ObjectBehavior {
 
 		$this->setPath(__DIR__);
 		$this->setCompress(true);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupException')->during('restore', ['filename.sql.gz']);
+		$this->shouldThrow(BackupException::class)->during('restore', ['filename.sql.gz']);
 	}
 
 }

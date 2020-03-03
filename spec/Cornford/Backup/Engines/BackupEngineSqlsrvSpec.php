@@ -1,5 +1,6 @@
 <?php namespace spec\Cornford\Backup\Engines;
 
+use Cornford\Backup\Engines\BackupEngineSqlsrv;
 use PhpSpec\ObjectBehavior;
 use Mockery;
 
@@ -9,7 +10,7 @@ class BackupEngineSqlsrvSpec extends ObjectBehavior {
 
 	public function let()
 	{
-		$symfonyProcess = Mockery::mock('Symfony\Component\Process\Process');
+		$symfonyProcess = Mockery::mock(Process::class);
 		$symfonyProcess->shouldReceive('run');
 		$symfonyProcess->shouldReceive('isSuccessful')->andReturn(true);
 		$symfonyProcess->shouldReceive('setCommandLine')->andReturn($symfonyProcess);
@@ -38,7 +39,7 @@ class BackupEngineSqlsrvSpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\Engines\BackupEnginesqlsrv');
+		$this->shouldHaveType(BackupEnginesqlsrv::class);
 	}
 
 	function it_should_return_the_correct_file_extension()

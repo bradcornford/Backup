@@ -1,5 +1,15 @@
 <?php namespace spec\Cornford\Backup;
 
+use Cornford\Backup\BackupFactory;
+use Cornford\Backup\Contracts\BackupEngineInterface;
+use Cornford\Backup\Contracts\BackupFilesystemInterface;
+use Cornford\Backup\Contracts\BackupInterface;
+use Cornford\Backup\Engines\BackupEngineMysql;
+use Cornford\Backup\Engines\BackupEnginePgsql;
+use Cornford\Backup\Engines\BackupEngineSqlite;
+use Cornford\Backup\Engines\BackupEngineSqlsrv;
+use Cornford\Backup\Exceptions\BackupArgumentException;
+use Cornford\Backup\Exceptions\BackupException;
 use PhpSpec\ObjectBehavior;
 use Mockery;
 
@@ -43,95 +53,95 @@ class BackupFactorySpec extends ObjectBehavior {
 
 	function it_is_initializable()
 	{
-		$this->shouldHaveType('Cornford\Backup\BackupFactory');
+		$this->shouldHaveType(BackupFactory::class);
 	}
 
 	function it_can_build_a_backup_object()
 	{
-		$this->build($this->options)->shouldHaveType('Cornford\Backup\Contracts\BackupInterface');
+		$this->build($this->options)->shouldHaveType(BackupInterface::class);
 	}
 
 	function it_can_build_a_backup_object_with_a_backup_engine_object()
 	{
-		$this->buildBackup($this->buildBackupEngine($this->options), $this->buildBackupFilesystem(), $this->options)->shouldHaveType('Cornford\Backup\Contracts\BackupInterface');
+		$this->buildBackup($this->buildBackupEngine($this->options), $this->buildBackupFilesystem(), $this->options)->shouldHaveType(BackupInterface::class);
 	}
 
 	function it_can_build_a_backup_filesystem_object()
 	{
-		$this->buildBackupFilesystem()->shouldHaveType('Cornford\Backup\Contracts\BackupFilesystemInterface');
+		$this->buildBackupFilesystem()->shouldHaveType(BackupFilesystemInterface::class);
 	}
 
 	function it_can_build_a_backup_engine_object()
 	{
-		$this->buildBackupEngine($this->options)->shouldHaveType('Cornford\Backup\Contracts\BackupEngineInterface');
+		$this->buildBackupEngine($this->options)->shouldHaveType(BackupEngineInterface::class);
 	}
 
 	function it_can_build_a_mysql_backup_engine_object()
 	{
-		$this->buildBackupEngine($this->options)->shouldHaveType('Cornford\Backup\Engines\BackupEngineMysql');
+		$this->buildBackupEngine($this->options)->shouldHaveType(BackupEngineMysql::class);
 	}
 
 	function it_can_build_a_pgsql_backup_engine_object()
 	{
 		$options = $this->options;
 		$options['default'] = 'pgsql';
-		$this->buildBackupEngine($options)->shouldHaveType('Cornford\Backup\Engines\BackupEnginePgsql');
+		$this->buildBackupEngine($options)->shouldHaveType(BackupEnginePgsql::class);
 	}
 
 	function it_can_build_a_sqlite_backup_engine_object()
 	{
 		$options = $this->options;
 		$options['default'] = 'sqlite';
-		$this->buildBackupEngine($options)->shouldHaveType('Cornford\Backup\Engines\BackupEngineSqlite');
+		$this->buildBackupEngine($options)->shouldHaveType(BackupEngineSqlite::class);
 	}
 
 	function it_can_build_a_sqlsrv_backup_engine_object()
 	{
 		$options = $this->options;
 		$options['default'] = 'sqlsrv';
-		$this->buildBackupEngine($options)->shouldHaveType('Cornford\Backup\Engines\BackupEngineSqlsrv');
+		$this->buildBackupEngine($options)->shouldHaveType(BackupEngineSqlsrv::class);
 	}
 
 	function it_throws_an_exception_when_an_undefined_backup_engine_object_is_created()
 	{
 		$options = $this->options;
 		$options['default'] = 'test';
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupException')->during('buildBackupEngine', [$options]);
+		$this->shouldThrow(BackupException::class)->during('buildBackupEngine', [$options]);
 	}
 
 	function it_throws_an_exception_when_no_enabled_setting_is_set_when_a_backup_object_is_created()
 	{
 		$options = $this->options;
 		unset($options['enabled']);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupArgumentException')->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
+		$this->shouldThrow(BackupArgumentException::class)->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
 	}
 
 	function it_throws_an_exception_when_no_path_setting_is_set_when_a_backup_object_is_created()
 	{
 		$options = $this->options;
 		unset($options['path']);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupArgumentException')->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
+		$this->shouldThrow(BackupArgumentException::class)->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
 	}
 
 	function it_throws_an_exception_when_no_filename_setting_is_set_when_a_backup_object_is_created()
 	{
 		$options = $this->options;
 		unset($options['filename']);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupArgumentException')->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
+		$this->shouldThrow(BackupArgumentException::class)->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
 	}
 
 	function it_throws_an_exception_when_no_compress_setting_is_set_when_a_backup_object_is_created()
 	{
 		$options = $this->options;
 		unset($options['compress']);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupArgumentException')->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
+		$this->shouldThrow(BackupArgumentException::class)->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
 	}
 
 	function it_throws_an_exception_when_no_processors_setting_is_set_when_a_backup_object_is_created()
 	{
 		$options = $this->options;
 		unset($options['processors']);
-		$this->shouldThrow('Cornford\Backup\Exceptions\BackupArgumentException')->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
+		$this->shouldThrow(BackupArgumentException::class)->during('buildBackup', [$this->buildBackupEngine($options), $this->buildBackupFilesystem(), $options]);
 	}
 
 }
