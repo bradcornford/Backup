@@ -215,11 +215,13 @@ class Backup extends BackupAbstract {
 					continue;
 				}
 
-				$results[] = $fileinfo->getPathname();
+				$results[$fileinfo->getMTime()] = $fileinfo->getPathname();
 			}
 		} catch (Exception $exception) {
 			// Exception thrown continue and return empty result set
 		}
+
+		ksort($results);
 
 		return $results;
 	}
