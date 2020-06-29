@@ -1,5 +1,6 @@
 suites:
   cornford_suite:
-    namespace: Cornford
+    namespace: Cornford\Backup
+    psr4_prefix: Cornford\Backup
     src_path: src
     spec_prefix: spec

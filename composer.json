@@ -11,19 +11,27 @@
     ],
     "require": {
         "php": ">=7.2",
-        "illuminate/support": "^6.0",
-        "illuminate/console": "^6.0",
-        "illuminate/config": "^6.0",
+        "illuminate/support": "^6.0 || ^7.0",
+        "illuminate/console": "^6.0 || ^7.0",
+        "illuminate/config": "^6.0 || ^7.0",
         "symfony/process": "^4.3"
     },
     "require-dev": {
         "phpspec/phpspec": "^6.0",
         "mockery/mockery": "^1.2.4",
-        "phpunit/phpunit": "^8.4"
+        "phpunit/phpunit": "^8.4",
+        "phpmd/phpmd": "^2.7",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
-        "psr-0": {
-            "Cornford\\Backup": "src/"
+        "psr-4": {
+            "Cornford\\Backup\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "spec\\Cornford\\Backup\\": "spec/",
+            "tests\\Cornford\\Backup\\": "tests/"
         }
     },
     "minimum-stability": "stable",
@@ -36,5 +44,27 @@
                 "Backup": "Cornford\\Backup\\Facades\\BackupFacade"
             }
         }
+    },
+    "scripts": {
+        "phplint": [
+            "find . -type f -name \"*.php\" ! -path \"./vendor/*\" -exec php -l {} \\; | grep -vi \"no syntax errors\" || true"
+        ],
+        "phpcs": [
+            "./vendor/bin/phpcs --standard=phpcs.xml src || true"
+        ],
+        "phpmd": [
+            "./vendor/bin/phpmd src text phpmd.xml || true"
+        ],
+        "phpspec": [
+            "./vendor/bin/phpspec -c phpspec.yml run spec || true"
+        ],
+        "phpunit": [
+            "./vendor/bin/phpunit -c phpunit.xml tests"
+        ],
+        "analyse": [
+            "@phplint",
+            "@phpcs",
+            "@phpmd"
+        ]
     }
 }

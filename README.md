@@ -130,14 +130,14 @@ The `getBackupFilesystemInstance` method returns the current backup filesystem i
 
 ### Set Enabled
 
-The `setEnabled` method allows backup to be switched on or off, specifying a boolean for state.
+The `setEnabled` method allows backup to be switched on or off, specifying a bool for state.
 
 	Backup::setEnabled(true);
 	Backup::setEnabled(false);
 
 ### Get Enabled
 
-The `getEnabled` method returns the current backup enabled status, returning a boolean for its state.
+The `getEnabled` method returns the current backup enabled status, returning a bool for its state.
 
 	Backup::getEnabled();
 
@@ -155,14 +155,14 @@ The `getPath` method returns the current absolute backup path in string format.
 
 ### Set Compress
 
-The `setCompress` method allows backup file compression to be switched on or off, specifying a boolean for state.
+The `setCompress` method allows backup file compression to be switched on or off, specifying a bool for state.
 
 	Backup::setCompress(true);
 	Backup::setCompress(false);
 
 ### Get Compress
 
-The `getCompress` method returns the current compression backup status, returning a boolean for its state.
+The `getCompress` method returns the current compression backup status, returning a bool for its state.
 
 	Backup::getCompress();
 
